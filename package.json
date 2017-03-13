@@ -8,6 +8,7 @@
     "build": "webpack -p"
   },
   "devDependencies": {
+    "html-webpack-plugin": "^2.28.0",
     "webpack": "^2.2.1"
   }
 }
