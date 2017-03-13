@@ -1,0 +1,13 @@
+{
+  "name": "webpack-101",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack -d --watch",
+    "build": "webpack -p"
+  },
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}
