@@ -18,6 +18,11 @@ module.exports = {
           publicPath: './dist'
         }), 
       },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
+      },
     ],
   },
   devServer: {
@@ -32,6 +37,7 @@ module.exports = {
       //   collapseWhitespace: true,
       // },
       hash: true,
+      template: './src/index.html'
     }),
     new ExtractTextPlugin({
       filename: 'app.css',
