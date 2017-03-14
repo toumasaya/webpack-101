@@ -14,6 +14,7 @@
 * [Webpack 2 with Webpack Dev Server Configuration](https://www.youtube.com/watch?v=soI7X-7OSb4)
 * [Webpack 2 - How to install React and Babel](https://www.youtube.com/watch?v=zhA5LNA3MxE)
 * [Webpack 2 - Multiple templates options and RimRaf](https://www.youtube.com/watch?v=OvjB2Sfq9ZU)
+* [Webpack 2 - How to use pug (jade) templates with Webpack](https://www.youtube.com/watch?v=nLR5yUCjTis)
 
 ---
 
@@ -555,7 +556,84 @@ plugins: [
 
 ![](https://i.imgur.com/tF1HIqX.png)
 
+## How to use pug (jade) templates with Webpack
 
+如何在 webpack 使用 Pug？
+
+安裝 `pug`、`pug-html-loader` 和 `html-loader`：
+
+```shell
+$ yarn add -D pug pug-html-loader html-loader
+```
+
+影片只裝了 `pug`、`pug-html-loader`，但實際上實作出現錯誤，看了一下 [pug-html-loader](https://github.com/willyelm/pug-html-loader) 文件，看來要搭配 `html-loader` 使用，就沒有錯誤訊息了。
+
+把原本的 `src/index.html` 改成 `src/index.pug`，內容改成 Pug：
+
+```html
+doctype html
+html
+  head
+    title demo
+  body
+    #root
+```
+
+設定 `webpack.config.js`：
+
+```javascript
+...
+module: {
+  rules: [
+    ...
+    {
+      test: /\.pug$/,
+      use: ['html-loader', 'pug-html-loader']
+    },
+  ],
+},
+...
+```
+
+執行 `yarn run dev` 觀看成果。
+
+再來試試 include 其他 Pug file 到 `src/index.pug`，建立 `src/includes/header.pug`：
+
+```html
+h1 This Header from include file
+```
+
+修改 `index.pug`：
+
+```html
+doctype html
+html
+  head
+    title demo
+  body
+    include includes/header.pug
+    #root
+```
+
+執行 `yarn run dev` 觀看成果。
+
+---
+
+還有另一個 loader 是 `pug-loader`，實測只要裝這個 loader 也可以順利編譯 Pug file：
+
+```javascript
+...
+module: {
+  rules: [
+    ...
+    {
+      test: /\.pug$/,
+      use: 'pug-loader'
+    },
+  ],
+},
+...
+```
 
 ## VS Code 小技巧
 
