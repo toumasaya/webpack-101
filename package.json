@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server",
-    "build": "webpack -p"
+    "build": "yarn run clean && webpack -p",
+    "clean": "rimraf ./dist/*"
   },
   "devDependencies": {
     "babel": "^6.23.0",
@@ -17,6 +18,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.0",
+    "rimraf": "^2.6.1",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.13.2",
     "webpack": "^2.2.1",
