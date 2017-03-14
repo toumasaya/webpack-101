@@ -15,6 +15,7 @@
 * [Webpack 2 - How to install React and Babel](https://www.youtube.com/watch?v=zhA5LNA3MxE)
 * [Webpack 2 - Multiple templates options and RimRaf](https://www.youtube.com/watch?v=OvjB2Sfq9ZU)
 * [Webpack 2 - How to use pug (jade) templates with Webpack](https://www.youtube.com/watch?v=nLR5yUCjTis)
+* [Webpack 2 - Hot Module Replacement - CSS](https://www.youtube.com/watch?v=faFJw1wjQLE)
 
 ---
 
@@ -634,6 +635,88 @@ module: {
 },
 ...
 ```
+
+## Hot Module Replacement - CSS
+
+更多詳細設定可以參考官方文件： [Using webpack with a config](https://webpack.js.org/guides/hmr-react/#using-webpack-with-a-config)
+
+啟動 HMR 很簡單，只要在 `webpack.config.js` 的 `devServer` 設定 `hot: true`：
+
+```javascript
+...
+devServer: {
+  contentBase: path.join(__dirname, "dist"),
+  compress: true,
+  hot: true, // 啟動 HMR
+  stats: "errors-only",
+  open: true
+},
+...
+```
+
+然後要 include webpack：
+
+```javascript
+...
+const webpack = require('webpack');
+...
+```
+
+接著建立兩個 plugin：
+
+```javascript
+...
+plugins: [
+  ...
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NamedModulesPlugin(),
+],
+...
+```
+
+不過由於啟動 HMR 之後，`ExtractTextPlugin` 就無法作用，所以先關掉 `ExtractTextPlugin`：
+
+```javascript
+...
+plugins: [
+  ...
+  new ExtractTextPlugin({
+    filename: 'app.css',
+    disable: true, // 把 ExtractTextPlugin 關掉
+    allChunks: true
+  }),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NamedModulesPlugin(),
+],
+...
+```
+
+然後修改原本的 loader 設定：
+
+```javascript
+...
+module: {
+  rules: [
+    { 
+      test: /\.scss$/, 
+      // use: ExtractTextPlugin.extract({
+      //   fallback: 'style-loader',
+      //   use: ['css-loader', 'sass-loader'],
+      //   publicPath: './dist'
+      // }), 
+      use: ['style-loader', 'css-loader', 'sass-loader'],
+    },
+    ...
+  ],
+},
+...
+```
+
+執行 `yarn run dev`，可以看到成功啟動 HMR：
+
+![](https://i.imgur.com/Vh1Jssq.png)
+
+可以修改 `src/app.scss` 觀察變化。
 
 ## VS Code 小技巧
 
